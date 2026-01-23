@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User-Agent Switcher</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <h1>User-Agent Switcher</h1>
+
+    <div class="toggle-row">
+      <span class="toggle-label">Enable</span>
+      <label class="switch" for="enabled">
+        <input type="checkbox" id="enabled">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label for="mode">Mode</label>
+      <select id="mode">
+        <option value="all">All websites</option>
+        <option value="perSite">Per-site rules</option>
+      </select>
+    </div>
+
+    <div id="globalSection" class="form-group">
+      <label for="userAgent">User-Agent</label>
+      <textarea id="userAgent" placeholder="Enter custom User-Agent string"></textarea>
+      <div class="presets">
+        <button class="preset-btn" data-ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36">Chrome Win</button>
+        <button class="preset-btn" data-ua="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36">Chrome Mac</button>
+        <button class="preset-btn" data-ua="Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1">iPhone</button>
+        <button class="preset-btn" data-ua="Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36">Android</button>
+        <button class="preset-btn" data-ua="Mozilla/5.0 (X11; CrOS x86_64 10066.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36">Chrome OS</button>
+      </div>
+      <div id="customPresets" class="presets"></div>
+      <div class="custom-preset-form">
+        <input type="text" id="presetName" placeholder="Preset name">
+        <button id="savePreset" class="btn-add-preset">+ Save as Preset</button>
+      </div>
+    </div>
+
+    <div id="perSiteSection" class="form-group hidden">
+      <span class="form-label">Site Rules</span>
+      <div id="siteRules"></div>
+      <button id="addRule" class="btn-secondary">+ Add Rule</button>
+    </div>
+
+    <button id="save" class="btn-primary">Save</button>
+    <div id="status" class="status"></div>
+  </div>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

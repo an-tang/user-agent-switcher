@@ -1,0 +1,14 @@
+{
+  "name": "user-agent-switcher",
+  "version": "1.0.0",
+  "description": "Set a persistent custom User-Agent for all or specific websites",
+  "scripts": {
+    "build": "tsc && cp -r public/* dist/",
+    "watch": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "typescript": "^5.4.0"
+  }
+}
