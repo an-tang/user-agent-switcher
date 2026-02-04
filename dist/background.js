@@ -33,6 +33,9 @@ async function updateRules() {
     if (!settings.enabled || !settings.userAgent) {
         return;
     }
+    const excludedDomains = settings.excludedDomains?.length
+        ? settings.excludedDomains
+        : DEFAULT_SETTINGS.excludedDomains;
     const newRules = [];
     if (settings.mode === 'all') {
         newRules.push({
@@ -50,7 +53,10 @@ async function updateRules() {
             },
             condition: {
                 urlFilter: '*',
-                resourceTypes: RESOURCE_TYPES
+                resourceTypes: RESOURCE_TYPES,
+                ...(excludedDomains.length > 0 && {
+                    excludedRequestDomains: excludedDomains
+                })
             }
         });
     }

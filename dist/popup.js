@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const customPresetsEl = document.getElementById('customPresets');
     const presetNameEl = document.getElementById('presetName');
     const savePresetBtn = document.getElementById('savePreset');
+    const excludedDomainsEl = document.getElementById('excludedDomains');
+    const addExcludedDomainBtn = document.getElementById('addExcludedDomain');
     let customPresets = [];
     // Load saved settings
     const settings = await chrome.storage.local.get(DEFAULT_SETTINGS);
@@ -22,6 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateModeVisibility();
     renderSiteRules(settings.siteRules);
     renderCustomPresets();
+    renderExcludedDomains(settings.excludedDomains || []);
     // Mode change handler
     modeEl.addEventListener('change', updateModeVisibility);
     function updateModeVisibility() {
@@ -74,6 +77,41 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
         return rules;
     }
+    // Excluded domains
+    function renderExcludedDomains(domains) {
+        excludedDomainsEl.innerHTML = '';
+        domains.forEach((domain, index) => {
+            const row = document.createElement('div');
+            row.className = 'excluded-domain-row';
+            row.innerHTML = `
+        <input type="text" class="excluded-domain-input" placeholder="e.g. chatgpt.com" value="${escapeHtml(domain || '')}">
+        <button class="btn-remove" data-index="${index}">&times;</button>
+      `;
+            excludedDomainsEl.appendChild(row);
+        });
+        excludedDomainsEl.querySelectorAll('.btn-remove').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const target = e.target;
+                const index = Number.parseInt(target.dataset.index || '0', 10);
+                const current = getExcludedDomainsFromDOM();
+                current.splice(index, 1);
+                renderExcludedDomains(current);
+            });
+        });
+    }
+    function getExcludedDomainsFromDOM() {
+        const domains = [];
+        excludedDomainsEl.querySelectorAll('.excluded-domain-input').forEach(input => {
+            const value = input.value.trim();
+            domains.push(value);
+        });
+        return domains;
+    }
+    addExcludedDomainBtn.addEventListener('click', () => {
+        const current = getExcludedDomainsFromDOM();
+        current.push('');
+        renderExcludedDomains(current);
+    });
     // Add new rule
     addRuleBtn.addEventListener('click', () => {
         const currentRules = getSiteRulesFromDOM();
@@ -153,7 +191,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             mode: modeEl.value,
             userAgent: userAgentEl.value.trim(),
             siteRules: getSiteRulesFromDOM().filter(r => r.domain || r.userAgent),
-            customPresets
+            customPresets,
+            excludedDomains: getExcludedDomainsFromDOM().filter(d => d.length > 0)
         };
         try {
             await chrome.storage.local.set(newSettings);

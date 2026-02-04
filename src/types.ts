@@ -14,6 +14,7 @@ export interface Settings {
   mode: 'all' | 'perSite';
   siteRules: SiteRule[];
   customPresets: CustomPreset[];
+  excludedDomains: string[];
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -21,5 +22,6 @@ export const DEFAULT_SETTINGS: Settings = {
   userAgent: '',
   mode: 'all',
   siteRules: [],
-  customPresets: []
+  customPresets: [],
+  excludedDomains: ['chatgpt.com', 'chat.openai.com', 'openai.com', 'oaistatic.com', 'oaiusercontent.com']
 };

@@ -3,5 +3,6 @@ export const DEFAULT_SETTINGS = {
     userAgent: '',
     mode: 'all',
     siteRules: [],
-    customPresets: []
+    customPresets: [],
+    excludedDomains: ['chatgpt.com', 'chat.openai.com', 'openai.com', 'oaistatic.com', 'oaiusercontent.com']
 };

@@ -41,6 +41,10 @@ async function updateRules(): Promise<void> {
     return;
   }
 
+  const excludedDomains = settings.excludedDomains?.length
+    ? settings.excludedDomains
+    : DEFAULT_SETTINGS.excludedDomains;
+
   const newRules: chrome.declarativeNetRequest.Rule[] = [];
 
   if (settings.mode === 'all') {
@@ -59,7 +63,10 @@ async function updateRules(): Promise<void> {
       },
       condition: {
         urlFilter: '*',
-        resourceTypes: RESOURCE_TYPES
+        resourceTypes: RESOURCE_TYPES,
+        ...(excludedDomains.length > 0 && {
+          excludedRequestDomains: excludedDomains
+        })
       }
     });
   } else if (settings.mode === 'perSite' && settings.siteRules.length > 0) {
